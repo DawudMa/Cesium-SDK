@@ -98,7 +98,7 @@ const PGC = {
      * height: 图片高度
      * width: 图片宽度
      **/
-    addmaker: function (layerID, x, y, img, height, width, id, attr) {
+    addmaker: function (layerID, x, y, img, height, width, attr) {
         let p = Cesium.Cartesian3.fromDegrees(x, y);
         viewer.entities.add({
             attr: attr ? attr : null,
