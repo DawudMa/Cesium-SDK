@@ -98,9 +98,11 @@ const PGC = {
      * height: 图片高度
      * width: 图片宽度
      **/
-    addmaker: function (x, y, img, height, width) {
+    addmaker: function (layerID, x, y, img, height, width, id, attr) {
         let p = Cesium.Cartesian3.fromDegrees(x, y);
         viewer.entities.add({
+            attr: attr ? attr : null,
+            layer: layerID,
             position: p,
             billboard: {
                 image: img, // default: undefined
@@ -119,22 +121,22 @@ const PGC = {
      * range 相机与目标的距离(单位米)，默认500，可选
      * duration 飞行时间，单位秒，默认飞行3秒，可选
      * */
-    fly2Point: function (x, y, pitch, distance, duration) {//点位置 + 俯仰角 + 时间
-        let x = x ? x : 0;
-        let y = y ? y : 0;
+    fly2Point: function (x, y, pitch, distance, duration) {
+        let lon = x ? x : 0;
+        let lat = y ? y : 0;
         if (x == 0) {
             return
         }
-        let pitch = pitch ? pitch : 45;
-        let distance = distance ? distance : 500;
-        let duration = duration ? duration : 3;
+        let p = pitch ? pitch : 45;
+        let dis = distance ? distance : 500;
+        let dur = duration ? duration : 3;
         let entity = viewer.entities.getById("flyTmp");
         if (Cesium.defined(entity)) {
             viewer.entities.remove(entity);
         }
         entity = viewer.entities.add({
             id: 'flyTmp',
-            position: Cesium.Cartesian3.fromDegrees(x, y),
+            position: Cesium.Cartesian3.fromDegrees(lon, lat),
             point: {
                 pixelSize: 0,
                 color: Cesium.Color.WHITE.withAlpha(0),
@@ -143,8 +145,8 @@ const PGC = {
             }
         });
         viewer.flyTo(entity, {
-            duration: duration,
-            offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(pitch), range)
+            duration: dur,
+            offset: new Cesium.HeadingPitchRange(0, Cesium.Math.toRadians(p), dis)
         });
     },
 }
